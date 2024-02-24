@@ -27,7 +27,7 @@ See [soenneker.utils.httpclientcache](https://github.com/soenneker/soenneker.uti
 public static async Task Main(string[] args)
 {
     ...
-    builder.Services.AddTwilioRestClientUtil();
+    builder.Services.AddTwilioRestClientUtilAsSingleton();
 }
 ```
 
