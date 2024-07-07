@@ -1,6 +1,7 @@
 using Soenneker.Twilio.RestClient.Abstract;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Soenneker.Extensions.Configuration;
@@ -9,11 +10,11 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 using Twilio.Clients;
 using Twilio.Http;
 using HttpClient = System.Net.Http.HttpClient;
+using Soenneker.Extensions.ValueTask;
 
 namespace Soenneker.Twilio.RestClient;
 
 /// <inheritdoc cref="ITwilioRestClientUtil"/>
-///<inheritdoc cref="ITwilioRestClientUtil"/>
 public class TwilioRestClientUtil : ITwilioRestClientUtil
 {
     private readonly IHttpClientCache _httpClientCache;
@@ -24,22 +25,22 @@ public class TwilioRestClientUtil : ITwilioRestClientUtil
     {
         _httpClientCache = httpClientCache;
 
-        _restClient = new AsyncSingleton<TwilioRestClient>(async () =>
+        _restClient = new AsyncSingleton<TwilioRestClient>(async (token, _) =>
         {
             logger.LogDebug("Initializing Twilio REST client...");
 
             var accountSid = configuration.GetValueStrict<string>("Twilio:AccountSid");
             var authToken = configuration.GetValueStrict<string>("Twilio:AuthToken");
 
-            HttpClient httpClient = await httpClientCache.Get(nameof(TwilioRestClientUtil));
+            HttpClient httpClient = await httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token).NoSync();
 
             return new TwilioRestClient(accountSid, authToken, httpClient: new SystemNetHttpClient(httpClient));
         });
     }
 
-    public ValueTask<TwilioRestClient> Get()
+    public ValueTask<TwilioRestClient> Get(CancellationToken cancellationToken = default)
     {
-        return _restClient.Get();
+        return _restClient.Get(cancellationToken);
     }
 
     public void Dispose()
@@ -55,8 +56,8 @@ public class TwilioRestClientUtil : ITwilioRestClientUtil
     {
         GC.SuppressFinalize(this);
 
-        await _httpClientCache.Remove(nameof(TwilioRestClientUtil));
+        await _httpClientCache.Remove(nameof(TwilioRestClientUtil)).NoSync();
 
-        await _restClient.DisposeAsync();
+        await _restClient.DisposeAsync().NoSync();
     }
 }

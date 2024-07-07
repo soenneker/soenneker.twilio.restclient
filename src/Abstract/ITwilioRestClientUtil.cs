@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Twilio.Clients;
 
@@ -9,5 +10,5 @@ namespace Soenneker.Twilio.RestClient.Abstract;
 /// </summary>
 public interface ITwilioRestClientUtil : IDisposable, IAsyncDisposable
 {
-    ValueTask<TwilioRestClient> Get();
+    ValueTask<TwilioRestClient> Get(CancellationToken cancellationToken = default);
 }
