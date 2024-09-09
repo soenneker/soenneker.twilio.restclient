@@ -41,7 +41,7 @@ jobs:
       - name: Pack
         run: dotnet pack --no-build --configuration Release --output .
 
-      - name: Publish to NuGet with 3.5 exponent backoff
+      - name: Publish to NuGet with exponential backoff
         run: |
           nupkg_files=$(find . -name "*.nupkg")
           retries=5
@@ -49,7 +49,10 @@ jobs:
           exponent=3.5
           
           for i in $(seq 1 $retries); do
-            dotnet nuget push $nupkg_files --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_TOKEN}} --skip-duplicate && break
+            if dotnet nuget push $nupkg_files --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_TOKEN}} --skip-duplicate; then
+              break
+            fi
+            
             if [ $i -lt $retries ]; then
               wait_time=$(awk "BEGIN {print int($base_wait_time * ($exponent ^ ($i - 1)))}")
               echo "NuGet publish failed, retrying in $wait_time seconds..."
@@ -58,5 +61,4 @@ jobs:
               echo "NuGet publish failed after $retries retries."
               exit 1
             fi
-          done
           done
