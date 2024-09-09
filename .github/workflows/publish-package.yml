@@ -43,7 +43,7 @@ jobs:
 
       - name: Publish to NuGet with 3.5 exponent backoff
         run: |
-          nupkg_files=$(ls **/*.nupkg)
+          nupkg_files=$(find . -name "*.nupkg")
           retries=5
           base_wait_time=20  # Start with 20 seconds
           exponent=3.5
@@ -58,4 +58,5 @@ jobs:
               echo "NuGet publish failed after $retries retries."
               exit 1
             fi
+          done
           done
