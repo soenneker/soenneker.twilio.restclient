@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies with retry
         run: |
           retries=5
-          base_wait_time=15  # Start with 15 seconds
+          base_wait_time=15
           exponent=2
 
           for i in $(seq 1 $retries); do
@@ -45,7 +45,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test test/Soenneker.Twilio.RestClient.Tests.csproj --no-restore --verbosity normal
+        run: dotnet test test/Soenneker.Twilio.RestClient.Tests/Soenneker.Twilio.RestClient.Tests.csproj --no-restore --verbosity normal
 
       - name: Pack
         run: dotnet pack --no-build --configuration Release --output .

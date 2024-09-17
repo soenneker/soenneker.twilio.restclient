@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\src\Soenneker.Twilio.RestClient.csproj" />
+        <ProjectReference Include="..\..\src\Soenneker.Twilio.RestClient.csproj" />
     </ItemGroup>
 
 </Project>
