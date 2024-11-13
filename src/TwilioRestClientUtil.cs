@@ -9,7 +9,6 @@ using Soenneker.Utils.AsyncSingleton;
 using Soenneker.Utils.HttpClientCache.Abstract;
 using Twilio.Clients;
 using Twilio.Http;
-using HttpClient = System.Net.Http.HttpClient;
 using Soenneker.Extensions.ValueTask;
 
 namespace Soenneker.Twilio.RestClient;
