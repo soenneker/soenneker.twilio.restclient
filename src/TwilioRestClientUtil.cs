@@ -31,7 +31,7 @@ public class TwilioRestClientUtil : ITwilioRestClientUtil
             var accountSid = configuration.GetValueStrict<string>("Twilio:AccountSid");
             var authToken = configuration.GetValueStrict<string>("Twilio:AuthToken");
 
-            HttpClient httpClient = await httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token).NoSync();
+            System.Net.Http.HttpClient httpClient = await httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token).NoSync();
 
             return new TwilioRestClient(accountSid, authToken, httpClient: new SystemNetHttpClient(httpClient));
         });
