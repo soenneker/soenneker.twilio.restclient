@@ -45,7 +45,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="3.0.572" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="3.0.519" />
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="3.0.1168" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="3.0.1169" />
         <PackageReference Include="Twilio" Version="7.8.0" />
     </ItemGroup>
 </Project>
