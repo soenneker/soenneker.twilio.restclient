@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Twilio.RestClient
+﻿# Contributing to Soenneker.Twilio.RestClient
 
 We're excited that you're interested in contributing!
 
