@@ -15,8 +15,7 @@ public static class TwilioRestClientUtilRegistrar
     /// </summary>
     public static IServiceCollection AddTwilioRestClientUtilAsSingleton(this IServiceCollection services)
     {
-        services.AddHttpClientCacheAsSingleton()
-                .TryAddSingleton<ITwilioRestClientUtil, TwilioRestClientUtil>();
+        services.AddHttpClientCacheAsSingleton().TryAddSingleton<ITwilioRestClientUtil, TwilioRestClientUtil>();
 
         return services;
     }
@@ -26,8 +25,7 @@ public static class TwilioRestClientUtilRegistrar
     /// </summary>
     public static IServiceCollection AddTwilioRestClientUtilAsScoped(this IServiceCollection services)
     {
-        services.AddHttpClientCacheAsSingleton()
-                .TryAddScoped<ITwilioRestClientUtil, TwilioRestClientUtil>();
+        services.AddHttpClientCacheAsSingleton().TryAddScoped<ITwilioRestClientUtil, TwilioRestClientUtil>();
 
         return services;
     }

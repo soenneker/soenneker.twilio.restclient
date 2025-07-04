@@ -1,6 +1,5 @@
 using Soenneker.Twilio.RestClient.Abstract;
 using System.Threading.Tasks;
-using System;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -14,7 +13,7 @@ using Soenneker.Extensions.ValueTask;
 namespace Soenneker.Twilio.RestClient;
 
 /// <inheritdoc cref="ITwilioRestClientUtil"/>
-public class TwilioRestClientUtil : ITwilioRestClientUtil
+public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
 {
     private readonly IHttpClientCache _httpClientCache;
 
@@ -44,8 +43,6 @@ public class TwilioRestClientUtil : ITwilioRestClientUtil
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
-
         _httpClientCache.RemoveSync(nameof(TwilioRestClientUtil));
 
         _restClient.Dispose();
@@ -53,8 +50,6 @@ public class TwilioRestClientUtil : ITwilioRestClientUtil
 
     public async ValueTask DisposeAsync()
     {
-        GC.SuppressFinalize(this);
-
         await _httpClientCache.Remove(nameof(TwilioRestClientUtil)).NoSync();
 
         await _restClient.DisposeAsync().NoSync();
