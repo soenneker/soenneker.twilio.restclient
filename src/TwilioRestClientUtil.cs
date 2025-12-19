@@ -23,14 +23,15 @@ public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
     {
         _httpClientCache = httpClientCache;
 
-        _restClient = new AsyncSingleton<TwilioRestClient>(async (token, _) =>
+        _restClient = new AsyncSingleton<TwilioRestClient>(async token =>
         {
             logger.LogDebug("Initializing Twilio REST client...");
 
             var accountSid = configuration.GetValueStrict<string>("Twilio:AccountSid");
             var authToken = configuration.GetValueStrict<string>("Twilio:AuthToken");
 
-            System.Net.Http.HttpClient httpClient = await httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token).NoSync();
+            System.Net.Http.HttpClient httpClient = await httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token)
+                                                                         .NoSync();
 
             return new TwilioRestClient(accountSid, authToken, httpClient: new SystemNetHttpClient(httpClient));
         });
@@ -50,8 +51,10 @@ public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
 
     public async ValueTask DisposeAsync()
     {
-        await _httpClientCache.Remove(nameof(TwilioRestClientUtil)).NoSync();
+        await _httpClientCache.Remove(nameof(TwilioRestClientUtil))
+                              .NoSync();
 
-        await _restClient.DisposeAsync().NoSync();
+        await _restClient.DisposeAsync()
+                         .NoSync();
     }
 }
