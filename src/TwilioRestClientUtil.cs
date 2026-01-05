@@ -16,25 +16,31 @@ namespace Soenneker.Twilio.RestClient;
 public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
 {
     private readonly IHttpClientCache _httpClientCache;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<TwilioRestClientUtil> _logger;
 
     private readonly AsyncSingleton<TwilioRestClient> _restClient;
 
     public TwilioRestClientUtil(IConfiguration configuration, IHttpClientCache httpClientCache, ILogger<TwilioRestClientUtil> logger)
     {
+        _configuration = configuration;
         _httpClientCache = httpClientCache;
+        _logger = logger;
 
-        _restClient = new AsyncSingleton<TwilioRestClient>(async token =>
-        {
-            logger.LogDebug("Initializing Twilio REST client...");
+        _restClient = new AsyncSingleton<TwilioRestClient>(CreateClient);
+    }
 
-            var accountSid = configuration.GetValueStrict<string>("Twilio:AccountSid");
-            var authToken = configuration.GetValueStrict<string>("Twilio:AuthToken");
+    private async ValueTask<TwilioRestClient> CreateClient(CancellationToken token)
+    {
+        _logger.LogDebug("Initializing Twilio REST client...");
 
-            System.Net.Http.HttpClient httpClient = await httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token)
-                                                                         .NoSync();
+        var accountSid = _configuration.GetValueStrict<string>("Twilio:AccountSid");
+        var authToken = _configuration.GetValueStrict<string>("Twilio:AuthToken");
 
-            return new TwilioRestClient(accountSid, authToken, httpClient: new SystemNetHttpClient(httpClient));
-        });
+        System.Net.Http.HttpClient httpClient = await _httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token)
+                                                                     .NoSync();
+
+        return new TwilioRestClient(accountSid, authToken, httpClient: new SystemNetHttpClient(httpClient));
     }
 
     public ValueTask<TwilioRestClient> Get(CancellationToken cancellationToken = default)
