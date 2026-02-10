@@ -42,7 +42,7 @@
 
     <ItemGroup>
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.764" />
-        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.1842" />
+        <PackageReference Include="Soenneker.Utils.HttpClientCache" Version="4.0.1843" />
         <PackageReference Include="Twilio" Version="7.14.3" />
     </ItemGroup>
 </Project>
