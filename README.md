@@ -1,6 +1,7 @@
 [![](https://img.shields.io/nuget/v/soenneker.twilio.restclient.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.twilio.restclient/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.twilio.restclient/publish-package.yml?style=for-the-badge)](https://github.com/soenneker/soenneker.twilio.restclient/actions/workflows/publish-package.yml)
 [![](https://img.shields.io/nuget/dt/soenneker.twilio.restclient.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.twilio.restclient/)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.twilio.restclient/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.twilio.restclient/actions/workflows/codeql.yml)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Twilio.RestClient
 ### An async thread-safe singleton for a Twilio RestClient
