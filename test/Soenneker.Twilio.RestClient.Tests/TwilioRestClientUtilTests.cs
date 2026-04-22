@@ -1,20 +1,19 @@
 using Soenneker.Twilio.RestClient.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Twilio.RestClient.Tests;
 
-[Collection("Collection")]
-public class TwilioRestClientUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class TwilioRestClientUtilTests : HostedUnitTest
 {
     private readonly ITwilioRestClientUtil _util;
 
-    public TwilioRestClientUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public TwilioRestClientUtilTests(Host host) : base(host)
     {
         _util = Resolve<ITwilioRestClientUtil>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
