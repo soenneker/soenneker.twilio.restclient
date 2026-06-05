@@ -48,6 +48,9 @@ public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
         return _restClient.Get(cancellationToken);
     }
 
+    /// <summary>
+    /// Releases resources used by the current instance.
+    /// </summary>
     public void Dispose()
     {
         _httpClientCache.RemoveSync(nameof(TwilioRestClientUtil));
@@ -55,6 +58,10 @@ public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
         _restClient.Dispose();
     }
 
+    /// <summary>
+    /// Asynchronously releases resources used by the current instance.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public async ValueTask DisposeAsync()
     {
         await _httpClientCache.Remove(nameof(TwilioRestClientUtil))

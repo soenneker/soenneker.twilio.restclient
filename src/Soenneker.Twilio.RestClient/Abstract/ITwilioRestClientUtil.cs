@@ -10,5 +10,10 @@ namespace Soenneker.Twilio.RestClient.Abstract;
 /// </summary>
 public interface ITwilioRestClientUtil : IDisposable, IAsyncDisposable
 {
+    /// <summary>
+    /// Gets the value.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task containing the result of the operation.</returns>
     ValueTask<TwilioRestClient> Get(CancellationToken cancellationToken = default);
 }
