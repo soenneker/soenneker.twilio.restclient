@@ -12,20 +12,27 @@ using Soenneker.Extensions.ValueTask;
 
 namespace Soenneker.Twilio.RestClient;
 
-/// <inheritdoc cref="ITwilioRestClientUtil"/>
 public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
 {
     private readonly IHttpClientCache _httpClientCache;
     private readonly IConfiguration _configuration;
     private readonly ILogger<TwilioRestClientUtil> _logger;
+    private readonly bool _removeHttpClientOnDispose;
 
     private readonly AsyncSingleton<TwilioRestClient> _restClient;
 
     public TwilioRestClientUtil(IConfiguration configuration, IHttpClientCache httpClientCache, ILogger<TwilioRestClientUtil> logger)
+        : this(configuration, httpClientCache, logger, removeHttpClientOnDispose: true)
+    {
+    }
+
+    internal TwilioRestClientUtil(IConfiguration configuration, IHttpClientCache httpClientCache, ILogger<TwilioRestClientUtil> logger,
+        bool removeHttpClientOnDispose)
     {
         _configuration = configuration;
         _httpClientCache = httpClientCache;
         _logger = logger;
+        _removeHttpClientOnDispose = removeHttpClientOnDispose;
 
         _restClient = new AsyncSingleton<TwilioRestClient>(CreateClient);
     }
@@ -48,24 +55,21 @@ public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
         return _restClient.Get(cancellationToken);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
-        _httpClientCache.RemoveSync(nameof(TwilioRestClientUtil));
+        if (_removeHttpClientOnDispose)
+            _httpClientCache.RemoveSync(nameof(TwilioRestClientUtil));
 
         _restClient.Dispose();
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public async ValueTask DisposeAsync()
     {
-        await _httpClientCache.Remove(nameof(TwilioRestClientUtil))
-                              .NoSync();
+        if (_removeHttpClientOnDispose)
+        {
+            await _httpClientCache.Remove(nameof(TwilioRestClientUtil))
+                                  .NoSync();
+        }
 
         await _restClient.DisposeAsync()
                          .NoSync();

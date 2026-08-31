@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Description>An async thread-safe singleton for a Twilio RestClient</Description>
+        <Description>Provides a cached, authenticated Twilio REST client</Description>
         <Version Condition="'$(BUILD_VERSION)' == ''">4.0.0</Version>
         <Version Condition="'$(BUILD_VERSION)' != ''">$(BUILD_VERSION)</Version>
         <AssemblyName>Soenneker.Twilio.RestClient</AssemblyName>

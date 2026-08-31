@@ -6,14 +6,14 @@ using Twilio.Clients;
 namespace Soenneker.Twilio.RestClient.Abstract;
 
 /// <summary>
-/// An async thread-safe singleton for a Twilio RestClient
+/// Provides a cached, authenticated Twilio REST client.
 /// </summary>
 public interface ITwilioRestClientUtil : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Gets the value.
+    /// Gets the authenticated client, creating it on first use.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task containing the result of the operation.</returns>
+    /// <param name="cancellationToken">The token used to cancel client creation.</param>
+    /// <returns>The cached client.</returns>
     ValueTask<TwilioRestClient> Get(CancellationToken cancellationToken = default);
 }
