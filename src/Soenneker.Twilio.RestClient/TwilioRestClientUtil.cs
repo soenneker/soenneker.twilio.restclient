@@ -12,6 +12,7 @@ using Soenneker.Extensions.ValueTask;
 
 namespace Soenneker.Twilio.RestClient;
 
+/// <inheritdoc cref="ITwilioRestClientUtil" />
 public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
 {
     private readonly IHttpClientCache _httpClientCache;
