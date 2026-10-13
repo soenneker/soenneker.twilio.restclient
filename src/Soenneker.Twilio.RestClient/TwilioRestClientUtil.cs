@@ -42,8 +42,8 @@ public sealed class TwilioRestClientUtil : ITwilioRestClientUtil
     {
         _logger.LogDebug("Initializing Twilio REST client...");
 
-        var accountSid = _configuration.GetValueStrict<string>("Twilio:AccountSid");
-        var authToken = _configuration.GetValueStrict<string>("Twilio:AuthToken");
+        var accountSid = _configuration.GetStringStrict("Twilio:AccountSid");
+        var authToken = _configuration.GetStringStrict("Twilio:AuthToken");
 
         System.Net.Http.HttpClient httpClient = await _httpClientCache.Get(nameof(TwilioRestClientUtil), cancellationToken: token)
                                                                      .NoSync();
